@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Plans</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+
+        header {
+            background: #003366;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .plans-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px;
+            gap: 20px;
+        }
+
+        .plan {
+            background: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 250px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .plan button {
+            padding: 10px 20px;
+            background: #003366;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .plan button:hover {
+            background: #0055aa;
+        }
+
+#contact-modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#contact-modal.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+#contact-modal .modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 450px;
+    max-width: 90%;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+        #contact-modal input, 
+        #contact-modal textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        #contact-modal button {
+            background: #003366;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #contact-modal button:hover {
+            background: #0055aa;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Popular Categories</h1>
+    </header>
+
+   <div class="plans-container">
+    <div class="plan" data-plan="Protection Plan">
+        <h2>Protection Plan</h2>
+        <p>Secure your family’s future with comprehensive protection.</p>
+        <button class="contact-btn">Contact for Details</button>
+    </div>
+
+    <div class="plan" data-plan="Wealth Creation Plan">
+        <h2>Wealth Creation Plan</h2>
+        <p>Grow your wealth steadily with our smart investment options.</p>
+        <button class="contact-btn">Contact for Details</button>
+    </div>
+
+    <div class="plan" data-plan="Savings Plan">
+        <h2>Savings Plan</h2>
+        <p>High interest rates, flexible withdrawals for your savings.</p>
+        <button class="contact-btn">Contact for Details</button>
+    </div>
+
+    <div class="plan" data-plan="Child Plan">
+        <h2>Child Plan</h2>
+        <p>Secure your child’s future with educational and savings benefits.</p>
+        <button class="contact-btn">Contact for Details</button>
+    </div>
+
+    <div class="plan" data-plan="Retirement Plan">
+        <h2>Retirement Plan</h2>
+        <p>Plan for a comfortable retirement with guaranteed returns.</p>
+        <button class="contact-btn">Contact for Details</button>
+    </div>
+</div>
+
+
+<!-- Modal (hidden by default) -->
+<div id="contact-modal">
+    <div class="modal-content">
+        <h3 id="modal-plan-name"></h3>
+        <p id="modal-message"></p>
+        <p><strong>Name:</strong> Midhun Nand</p>
+        <p><strong>Designation:</strong> Customer Relationship Manager</p>
+        <p><strong>Phone:</strong> <a href="tel:6282350817">6282350817</a></p>
+        <button id="close-modal">Close</button>
+    </div>
+</div>
+
+
+
+
+    <script src="script.js"></script>
+</body>
+</html>
