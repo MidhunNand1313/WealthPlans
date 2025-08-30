@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Savings Plans</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
+    header { background: #003366; color: white; text-align: center; padding: 15px; font-size: 18px; }
+    .container { width: 100%; max-width: 500px; margin: 20px auto; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    h2 { color: #003366; font-size: 18px; margin-top: 10px; }
+    ul { list-style: none; padding: 0; }
+    ul li { background: #eef3f9; margin: 6px 0; padding: 10px; border-radius: 5px; font-size: 16px; }
+    .contact-form { margin-top: 20px; }
+    .contact-form label { display: block; margin: 10px 0 5px; font-size: 14px; font-weight: bold; }
+    .contact-form input[type="text"] { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px; }
+    .toggle { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; font-size: 14px; }
+    .toggle input { width: 40px; height: 20px; appearance: none; background: #ccc; outline: none; border-radius: 20px; position: relative; cursor: pointer; transition: background 0.3s; }
+    .toggle input:checked { background: #003366; }
+    .toggle input:before { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: white; border-radius: 50%; transition: transform 0.3s; }
+    .toggle input:checked:before { transform: translateX(20px); }
+    button { margin-top: 20px; width: 100%; padding: 12px; background: #003366; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; }
+    button:hover { background: #0055aa; }
+    @media (max-width: 400px) { header { font-size: 16px; } ul li { font-size: 14px; padding: 8px; } button { font-size: 14px; padding: 10px; } }
+  </style>
+</head>
+<body>
+  <header>
+    Savings Plans
+  </header>
+  <div class="container">
+    <h2>Available Plans</h2>
+    <ul>
+      <li>Smart Platina Supreme (Guaranteed Plan)</li>
+      <li>Smart Bachat Plus</li>
+      <li>Smart Lifetime Saver</li>
+    </ul>
+
+    <div class="contact-form">
+      <h2>Contact Us</h2>
+      <form>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="contact">Contact Number</label>
+        <input type="text" id="contact" name="contact" required>
+
+        <div class="toggle">
+          <span>NRI</span>
+          <input type="checkbox" id="nri" name="nri">
+        </div>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
