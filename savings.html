@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Savings Plans | SecureBank</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  emailjs.init("qmfui_iW6AVaFVyKP"); 
+</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
  <style>
    * {
@@ -501,57 +505,82 @@
             });
 
             // Form submission with enhanced mobile UX
-            $('#contactForm').submit(function(e) {
-                e.preventDefault();
-                
-                // Add loading state
-                $(this).addClass('loading');
-                $('.submit-btn').text('');
-                
-                // Simple form validation
-                const name = $('#name').val().trim();
-                const contact = $('#contact').val().trim();
-                const email = $('#email').val().trim();
-                
-                // Simulate API call delay
-                setTimeout(() => {
-                    if (name && contact && email) {
-                        // Remove loading state
-                        $(this).removeClass('loading');
-                        $('.submit-btn').text('Request Consultation');
-                        
-                        // Show success message
-                        $('#successMessage').slideDown(300);
-                        
-                        // Reset form after delay
-                        setTimeout(() => {
-                            $('#contactForm')[0].reset();
-                            $('#successMessage').slideUp(300);
-                        }, 4000);
-                    }
-                }, 2000);
-            });
+           $('#contactForm').submit(function(e) {
+    e.preventDefault();
+    const form = this;
 
-            // Phone number formatting for Indian numbers
-            $('#contact').on('input', function() {
-                let value = $(this).val().replace(/\D/g, '');
-                
-                // Limit to 10 digits
-                if (value.length > 10) {
-                    value = value.substring(0, 10);
-                }
-                
-                // Format as +91 XXXXX XXXXX
-                if (value.length > 0) {
-                    if (value.length <= 5) {
-                        value = '+91 ' + value;
-                    } else {
-                        value = '+91 ' + value.substring(0, 5) + ' ' + value.substring(5);
-                    }
-                }
-                
-                $(this).val(value);
-            });
+    // Add loading state
+    $(form).addClass('loading');
+    $('.submit-btn').text('');
+
+    // Send form using EmailJS
+    emailjs.sendForm('service_s36q7fe', 'template_kdgl38n', form)
+    .then(function(response) {
+        console.log('SUCCESS!', response.status, response.text);
+
+        // Remove loading state and reset button text
+        $(form).removeClass('loading');
+        $('.submit-btn').text('Request Consultation');
+
+        // Show success message
+        $('#successMessage').slideDown(300);
+
+        // Reset form and hide message after 4 seconds
+        setTimeout(() => {
+            form.reset();
+            $('#successMessage').slideUp(300);
+        }, 4000);
+    }, function(error) {
+        console.log('FAILED...', error);
+        alert('Oops! Something went wrong; please try again.');
+
+        // Remove loading state and reset button text
+        $(form).removeClass('loading');
+        $('.submit-btn').text('Request Consultation');
+    });
+});
+
+
+            $('#contact').on('input', function (e) {
+    let input = this;
+    let cursorPos = input.selectionStart;
+    let rawValue = input.value;
+
+    // Remove all non-digit characters except leading '+91'
+    let numbersOnly = rawValue.replace(/\D/g, '');
+
+    // Check if it already starts with country code
+    if (numbersOnly.startsWith('91')) {
+        numbersOnly = numbersOnly.substring(2);
+    }
+
+    // Limit to 10 digits max
+    if (numbersOnly.length > 10) {
+        numbersOnly = numbersOnly.substring(0, 10);
+    }
+
+    // Build formatted value
+    let formattedValue = '+91 ';
+    if (numbersOnly.length <= 5) {
+        formattedValue += numbersOnly;
+    } else {
+        formattedValue += numbersOnly.substring(0, 5) + ' ' + numbersOnly.substring(5);
+    }
+
+    // Only update if formatted string differs (to prevent infinite loop)
+    if (formattedValue !== rawValue) {
+        input.value = formattedValue;
+
+        // Adjust cursor position based on change
+        if (cursorPos <= 3) {
+            cursorPos = 4;  // after "+91 "
+        } else if (cursorPos > input.value.length) {
+            cursorPos = input.value.length;
+        }
+        input.setSelectionRange(cursorPos, cursorPos);
+    }
+});
+
 
             // Enhanced mobile form interactions
             $('.form-group input').on('focus', function() {
