@@ -22,48 +22,51 @@
         }
 
         .main-container {
-            max-width: 1200px;
+            width: 100%;
+            padding: 16px;
+            max-width: 400px;
             margin: 0 auto;
-            padding: 20px;
         }
 
-        /* Header Styles */
+        /* Header Styles - Mobile First */
         .header {
             text-align: center;
-            margin-bottom: 50px;
-            padding: 40px 20px;
+            margin-bottom: 32px;
+            padding: 24px 16px;
         }
 
         .header h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-size: 1.75rem;
             font-weight: 700;
             color: white;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .header p {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             color: rgba(255,255,255,0.9);
             font-weight: 300;
+            line-height: 1.4;
         }
 
-        /* Plans Grid */
+        /* Plans Grid - Mobile Optimized */
         .plans-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-bottom: 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 40px;
         }
 
         .plan-card {
             background: white;
             border-radius: 16px;
-            padding: 32px 24px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            padding: 24px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            width: 100%;
         }
 
         .plan-card::before {
@@ -72,51 +75,51 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 4px;
+            height: 3px;
             background: linear-gradient(90deg, #667eea, #764ba2);
         }
 
-        .plan-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+        .plan-card:active {
+            transform: scale(0.98);
         }
 
         .plan-icon {
-            width: 60px;
-            height: 60px;
+            width: 48px;
+            height: 48px;
             background: linear-gradient(135deg, #667eea, #764ba2);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 24px;
+            margin: 0 auto 16px;
+            font-size: 20px;
             color: white;
+            transition: transform 0.3s ease;
         }
 
         .plan-card h3 {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: #1a1a1a;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             text-align: center;
         }
 
         .plan-card p {
             color: #666;
-            font-size: 0.95rem;
+            font-size: 0.875rem;
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             line-height: 1.5;
         }
 
         .plan-btn {
             width: 100%;
-            padding: 12px 24px;
+            padding: 14px 20px;
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
@@ -124,39 +127,107 @@
             text-decoration: none;
             display: inline-block;
             text-align: center;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .plan-btn:hover {
+        .plan-btn:hover,
+        .plan-btn:active {
             transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
         }
 
-
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
+        /* Desktop Styles */
+        @media (min-width: 768px) {
             .main-container {
-                padding: 16px;
+                max-width: 1200px;
+                padding: 20px;
             }
-            
+
+            .header {
+                padding: 40px 20px;
+                margin-bottom: 50px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .header p {
+                font-size: 1.1rem;
+            }
+
             .plans-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 24px;
+                margin-bottom: 60px;
             }
-            
-            .modal-content {
-                width: 95%;
-                margin: 20px;
+
+            .plan-card {
+                padding: 32px 24px;
+            }
+
+            .plan-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+            }
+
+            .plan-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .plan-card h3 {
+                font-size: 1.4rem;
+                margin-bottom: 12px;
+            }
+
+            .plan-card p {
+                font-size: 0.95rem;
+                margin-bottom: 24px;
+            }
+
+            .plan-btn {
+                padding: 12px 24px;
             }
         }
 
-        @media (max-width: 480px) {
+        /* Touch improvements for mobile */
+        @media (max-width: 767px) {
             .plan-card {
-                padding: 24px 20px;
+                min-height: 180px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
             }
             
-            .modal-body {
-                padding: 20px;
+            .plan-btn {
+                margin-top: auto;
+                font-size: 1rem;
+                padding: 16px 20px;
+                font-weight: 600;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 360px) {
+            .main-container {
+                padding: 12px;
+            }
+            
+            .header {
+                padding: 20px 12px;
+                margin-bottom: 24px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .plan-card {
+                padding: 20px 16px;
             }
         }
     </style>
@@ -164,8 +235,8 @@
 <body>
     <div class="main-container">
         <header class="header">
-            <h1>Popular Categories</h1>
-            <p>Discover our comprehensive range of financial solutions designed to secure your future and achieve your goals.</p>
+            <h1>Financial Solutions</h1>
+            <p>Choose the perfect plan for your financial goals</p>
         </header>
 
         <div class="plans-grid">
@@ -220,15 +291,24 @@
                 });
             });
 
-            // Enhanced hover effects
-            $('.plan-card').hover(
-                function() {
-                    $(this).find('.plan-icon').css('transform', 'scale(1.1)');
-                },
-                function() {
-                    $(this).find('.plan-icon').css('transform', 'scale(1)');
-                }
-            );
+            // Enhanced touch effects for mobile
+            $('.plan-card').on('touchstart', function() {
+                $(this).css('transform', 'scale(0.98)');
+            }).on('touchend', function() {
+                $(this).css('transform', 'scale(1)');
+            });
+
+            // Enhanced hover effects for desktop
+            if (window.matchMedia("(min-width: 768px)").matches) {
+                $('.plan-card').hover(
+                    function() {
+                        $(this).find('.plan-icon').css('transform', 'scale(1.1)');
+                    },
+                    function() {
+                        $(this).find('.plan-icon').css('transform', 'scale(1)');
+                    }
+                );
+            }
         });
     </script>
 </body>
