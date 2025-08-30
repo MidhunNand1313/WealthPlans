@@ -6,6 +6,7 @@
     <title>Financial Plans | SecureBank</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,13 +14,18 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.6;
-            color: #1a1a1a;
-            background: linear-gradient(135deg, #3b82f6 0%, #ff0080 50%, #8e24aa 100%);
-            min-height: 100vh;
-        }
+      body {
+    font-family: 'Roboto', sans-serif;  /* Changed to Roboto for a professional look */
+    line-height: 1.6;
+    color: #1a1a1a;
+    background: linear-gradient(135deg, #3b82f6 0%, #ff0080 50%, #8e24aa 100%);
+    min-height: 100vh;
+}
+
+.header h1, .header p {
+    font-family: 'Roboto', sans-serif;  /* Ensures the header text uses Roboto */
+}
+
 
         .main-container {
             width: 100%;
@@ -28,14 +34,46 @@
             margin: 0 auto;
         }
 
-        /* Enhanced Header */
-        .header {
-            text-align: center;
-            margin-bottom: 32px;
-            padding: 40px 16px 32px;
-            position: relative;
-            overflow: hidden;
-        }
+     .header {
+    display: flex;
+    align-items: center; /* Keep logo and text vertically centered */
+    justify-content: center; /* Center the content horizontally */
+    text-align: center; /* Center the text */
+    margin-bottom: 32px;
+    padding: 40px 16px 32px;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-logo {
+    margin-right: 16px; /* Add some space between logo and text */
+}
+
+.logo-img {
+    width: 48px; /* Adjust logo size */
+    height: 48px; /* Adjust logo size */
+    object-fit: cover;
+}
+
+.header-text h1 {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.header-text p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 8px;
+}
+
+
+.logo-img {
+    width: 48px; /* Adjust size */
+    height: 48px; /* Adjust size */
+    object-fit: cover;
+}
+
 
         .header::before {
             content: '';
@@ -125,18 +163,26 @@
         }
 
         .plan-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #3b82f6, #ff0080, #8e24aa);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 20px;
-            color: white;
-            transition: transform 0.3s ease;
-        }
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    padding: 0;  /* Remove padding */
+    background: none;  /* Remove the background */
+    clip-path: inset(0);  /* Optional: to ensure the icon shape matches the container */
+    position: relative;
+}
+
+.plan-icon-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    background: none;  /* Remove background from the image */
+    border-radius: 0;  /* Optional: remove any rounded edges */
+}
+
 
         .plan-card h3 {
             font-size: 1.2rem;
@@ -258,21 +304,37 @@
         }
 
         /* Touch improvements for mobile */
-        @media (max-width: 767px) {
-            .plan-card {
-                min-height: 180px;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-            }
-            
-            .plan-btn {
-                margin-top: auto;
-                font-size: 1rem;
-                padding: 16px 20px;
-                font-weight: 600;
-            }
-        }
+     /* Header Adjustments for Mobile View */
+@media (max-width: 767px) {
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;  /* Left-align */
+        flex-direction: row;  /* Horizontal alignment */
+        padding: 16px;
+        text-align: left;  /* Ensure text aligns to the left */
+    }
+
+    .header-icon {
+        margin-right: 12px;  /* Space between logo and text */
+        width: 60px;
+        height: 60px;
+        font-size: 32px;
+    }
+
+    .header h1 {
+        font-size: 1.6rem;
+        margin-bottom: 6px;
+        margin-left: 8px;  /* Ensure spacing between logo and title */
+    }
+
+    .header p {
+        font-size: 1rem;
+        max-width: 280px;
+        margin: 0;
+    }
+}
+
 
         /* Very small screens */
         @media (max-width: 360px) {
@@ -297,43 +359,63 @@
 </head>
 <body>
     <div class="main-container">
-        <header class="header">
-            <div class="header-icon">💼</div>
-            <h1>Financial Solutions</h1>
-            <p>Choose the perfect plan for your financial goals</p>
+     <header class="header">
+    <div class="header-logo">
+        <img src="hand.png" alt="Financial Solutions Logo" class="logo-img">
+    </div>
+    <div class="header-text">
+        <h1>Financial Solutions</h1>
+        <p>Choose the perfect plan for your financial goals</p>
+    </div>
+</header>
+
         </header>
 
         <div class="plans-grid">
             <div class="plan-card">
-                <div class="plan-icon">🛡️</div>
+<div class="plan-icon">
+    <img src="family.png" alt="family Icon" style="width: 48px; height: 48px; object-fit: contain;">
+</div>
                 <h3>Protection Plans</h3>
                 <p>Comprehensive insurance solutions to safeguard your family's financial security and peace of mind.</p>
                 <a href="protection.html" class="plan-btn">Explore Plans</a>
             </div>
 
             <div class="plan-card">
-                <div class="plan-icon">📈</div>
+                <div class="plan-icon">
+                        <img src="wealth.png" alt="Wealth Icon" style="width: 48px; height: 48px; object-fit: contain;">
+
+                </div>
                 <h3>Wealth Creation</h3>
                 <p>Strategic investment options designed to build and grow your wealth over the long term.</p>
                 <a href="wealth.html" class="plan-btn">Explore Plans</a>
             </div>
 
             <div class="plan-card">
-                <div class="plan-icon">💰</div>
+                <div class="plan-icon">
+                  <img src="piggy-bank.png" alt="piggy-bank Icon" style="width: 48px; height: 48px; object-fit: contain;">
+
+                </div>
                 <h3>Savings Plans</h3>
                 <p>High-yield savings accounts with competitive interest rates and flexible withdrawal options.</p>
                 <a href="savings.html" class="plan-btn">Explore Plans</a>
             </div>
 
             <div class="plan-card">
-                <div class="plan-icon">🎓</div>
+                <div class="plan-icon">
+                     <img src="children.png" alt="children Icon" style="width: 48px; height: 48px; object-fit: contain;">
+
+                </div>
                 <h3>Child Plans</h3>
                 <p>Education-focused savings plans to secure your child's academic future and career goals.</p>
                 <a href="child.html" class="plan-btn">Explore Plans</a>
             </div>
 
             <div class="plan-card">
-                <div class="plan-icon">🏖️</div>
+                <div class="plan-icon">
+                <img src="retirement.png" alt="retirement Icon" style="width: 48px; height: 48px; object-fit: contain;">
+
+                </div>
                 <h3>Retirement Plans</h3>
                 <p>Secure retirement planning with guaranteed returns for a comfortable and worry-free future.</p>
                 <a href="retirement.html" class="plan-btn">Explore Plans</a>
