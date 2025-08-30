@@ -28,14 +28,13 @@
             margin: 0 auto;
         }
 
-        /* Enhanced Header */
-        .header {
-            text-align: center;
-            margin-bottom: 32px;
-            padding: 40px 16px 32px;
-            position: relative;
-            overflow: hidden;
-        }
+       .header {
+    display: flex;           /* horizontal layout */
+    align-items: center;     /* vertically center icon & text */
+    text-align: left;
+    gap: 12px;               /* space between icon and heading */
+    padding: 20px 16px 32px; /* keep existing padding */
+      }
 
         .header::before {
             content: '';
@@ -53,32 +52,30 @@
             50% { transform: translateY(-10px) rotate(180deg); }
         }
 
-        .header-icon {
-            width: 80px;
-            height: 80px;
-            background: rgba(255,255,255,0.15);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 36px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            position: relative;
-            z-index: 1;
-        }
+       .header-icon {
+    width: 50px;           /* smaller width */
+    height: 50px;          /* smaller height */
+    margin: 0;             /* left-align */
+    flex-shrink: 0;        /* prevent shrinking */
+    border-radius: 12px;   /* slightly smaller rounding */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.15);
+    font-size: 24px;       /* reduce icon font-size if using emoji fallback */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
 
-        .header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 8px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 1;
-        }
-
+     .header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    margin: 0; /* remove bottom margin so it stays on same line as icon */
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 1;
+}
         .header p {
             font-size: 0.95rem;
             color: rgba(255,255,255,0.9);
@@ -423,9 +420,9 @@
 <body>
     <div class="main-container">
         <header class="header">
-            <div class="header-icon">💰</div>
-            <h1>Savings Plans</h1>
-            <p>Grow your wealth with secure and flexible savings plans</p>
+  <div class="header-icon">
+            <img src="piggy-bank.png" alt="Family Icon" style="width: 100%; height: 100%;">
+        </div>            <h1>Savings Plans</h1>
         </header>
 
         <div class="content-container">
