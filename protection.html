@@ -430,6 +430,171 @@
             font-size: 1rem;
         }
 
+        /* Success Popup Modal */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeInOverlay 0.3s ease-out;
+        }
+
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .popup-modal {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 32px;
+            max-width: 360px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(0.8) translateY(20px);
+            opacity: 0;
+            animation: popupSlideIn 0.4s ease-out 0.1s forwards;
+            position: relative;
+        }
+
+        @keyframes popupSlideIn {
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .popup-success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: white;
+            animation: successIconBounce 0.6s ease-out 0.3s forwards;
+            transform: scale(0);
+        }
+
+        @keyframes successIconBounce {
+            0% { 
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% { 
+                transform: scale(1.1);
+                opacity: 1;
+            }
+            100% { 
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .popup-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            animation: slideInTitle 0.5s ease-out 0.4s both;
+        }
+
+        @keyframes slideInTitle {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .popup-message {
+            font-size: 1rem;
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 32px;
+            animation: slideInMessage 0.5s ease-out 0.5s both;
+        }
+
+        @keyframes slideInMessage {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .popup-close-btn {
+            background: linear-gradient(135deg, #3b82f6, #ff0080);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: slideInButton 0.5s ease-out 0.6s both;
+            min-width: 120px;
+        }
+
+        @keyframes slideInButton {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .popup-close-btn:active {
+            transform: scale(0.95);
+        }
+
+        .popup-close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Floating particles animation */
+        .popup-modal::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, transparent 30%, rgba(59, 130, 246, 0.1) 50%, transparent 70%);
+            border-radius: 25px;
+            opacity: 0;
+            animation: shimmer 3s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0; transform: rotate(0deg); }
+            50% { opacity: 1; transform: rotate(180deg); }
+        }
+
         /* Loading State */
         .loading .submit-btn {
             background: #9ca3af;
@@ -557,6 +722,15 @@
             }
         }
 
+        .popup-success-icon img {
+    width: 60px;   /* adjust as needed */
+    height: auto;  
+    display: block;
+    margin: 0 auto 15px;
+      margin-top: 20px;
+}
+
+
         /* Additional mobile scroll fixes */
         @supports (-webkit-appearance: none) {
             .main-container {
@@ -676,10 +850,47 @@
                 </div>
             </div>
         </div>
+
+    <!-- Success Popup Modal -->
+<div class="popup-overlay" id="successPopup">
+    <div class="popup-modal">
+        <div class="popup-success-icon">
+            <img src="check.png" alt="Success" class="popup-tick">
+        </div>
+        <h2 class="popup-title">Request Submitted!</h2>
+        <p class="popup-message">Your request has been submitted successfully. Our financial advisor will call you soon to discuss your protection plan options.</p>
+        <button class="popup-close-btn" onclick="closeSuccessPopup()">Got it</button>
     </div>
+</div>
+
 
     <script>
+        // Success popup functions
+        function showSuccessPopup() {
+            $('#successPopup').css('display', 'flex');
+        }
+
+        function closeSuccessPopup() {
+            $('#successPopup').fadeOut(300);
+        }
+
+        // Close popup when clicking overlay
+        $('#successPopup').on('click', function(e) {
+            if (e.target === this) {
+                closeSuccessPopup();
+            }
+        });
+
+        // Close popup with Escape key
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Escape' && $('#successPopup').is(':visible')) {
+                closeSuccessPopup();
+            }
+        });
+
         $(document).ready(function() {
+            console.log('Document ready!'); // Debug log
+            
             // Completely prevent any scrolling beyond content
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
@@ -710,25 +921,42 @@
             });
 
             // Form submission with enhanced mobile UX
-            $('#contactForm').submit(function(e) {
+            $('#contactForm').on('submit', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
+                console.log('Form submit event triggered!'); // Debug log
+                
                 const form = this;
+
+                // Validate form first
+                const name = $('#name').val().trim();
+                const phoneNumber = $('#contact').val().trim();
+                const email = $('#email').val().trim();
+                const plan = $('#plan').val();
+
+                console.log('Form values:', { name, phoneNumber, email, plan }); // Debug log
+
+                if (!name || !phoneNumber || !email || !plan) {
+                    alert('Please fill in all required fields.');
+                    return false;
+                }
 
                 // Get the selected country code and phone number
                 const countryCode = $('#countryCode').val();
-                const phoneNumber = $('#contact').val();
                 const fullPhoneNumber = countryCode + ' ' + phoneNumber;
+
+                console.log('Processing form submission...'); // Debug log
 
                 // Add loading state
                 $(form).addClass('loading');
-                $('.submit-btn').text('');
+                $('.submit-btn').text('').prop('disabled', true);
 
                 // Prepare form data for EmailJS
                 const formData = {
-                    name: $('#name').val(),
+                    name: name,
                     contact: fullPhoneNumber,
-                    email: $('#email').val(),
-                    plan: $('#plan').val(),
+                    email: email,
+                    plan: plan,
                     nri: $('#nri').is(':checked') ? 'Yes' : 'No'
                 };
 
@@ -739,24 +967,25 @@
 
                     // Remove loading state and reset button text
                     $(form).removeClass('loading');
-                    $('.submit-btn').text('Request Consultation');
+                    $('.submit-btn').text('Request Consultation').prop('disabled', false);
 
-                    // Show success message
-                    $('#successMessage').slideDown(300);
+                    // Show success popup instead of inline message
+                    showSuccessPopup();
 
-                    // Reset form and hide message after 4 seconds
+                    // Reset form after a short delay
                     setTimeout(() => {
                         form.reset();
-                        $('#successMessage').slideUp(300);
-                    }, 4000);
+                    }, 1000);
                 }, function(error) {
                     console.log('FAILED...', error);
                     alert('Oops! Something went wrong; please try again.');
 
                     // Remove loading state and reset button text
                     $(form).removeClass('loading');
-                    $('.submit-btn').text('Request Consultation');
+                    $('.submit-btn').text('Request Consultation').prop('disabled', false);
                 });
+
+                return false;
             });
 
             // Enhanced phone number formatting based on country code
