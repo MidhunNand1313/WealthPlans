@@ -651,10 +651,10 @@
                             <label for="plan">Interested Plan</label>
                             <select id="plan" name="plan" required style="width: 100%; padding: 14px 16px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 16px; background: white; -webkit-appearance: none; appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 4 5\"><path fill=\"%23666\" d=\"M2 0L0 2h4zm0 5L0 3h4z\"/></svg>'); background-repeat: no-repeat; background-position: right 12px center; background-size: 12px; color: #374151; cursor: pointer;">
                                 <option value="">Select a protection plan</option>
-                                <option value="Smart Shield">Smart Shield - Comprehensive term life insurance</option>
-                                <option value="Smart Swadhan Neo">Smart Swadhan Neo - Women-focused protection</option>
-                                <option value="Smart Shield Plus">Smart Shield Plus - Enhanced protection with benefits</option>
-                                <option value="General Inquiry">General Inquiry - Need guidance on all plans</option>
+                                <option value="Smart Shield - Protection Plan">Smart Shield</option>
+                                <option value="Smart Swadhan Neo - Protection Plan">Smart Swadhan Neo</option>
+                                <option value="Smart Shield Plus - Protection Plan">Smart Shield Plus</option>
+                                <option value="General Inquiry On Protection Plan">General Inquiry - Need guidance on all plans</option>
                             </select>
                         </div>
 
@@ -760,14 +760,25 @@
             });
 
             // Enhanced phone number formatting based on country code
-            $('#contact').on('input', function (e) {
+             $('#contact').on('input', function (e) {
                 let input = this;
                 let cursorPos = input.selectionStart;
                 let rawValue = input.value;
                 const selectedCountryCode = $('#countryCode').val();
 
-                // Remove all non-digit characters
+                // Store the old value before formatting
+                let oldValue = rawValue;
+
+                // Remove all non-digit characters to count actual digits
                 let numbersOnly = rawValue.replace(/\D/g, '');
+
+                // Count digits before cursor position in the original value
+                let digitsBeforeCursor = 0;
+                for (let i = 0; i < cursorPos && i < oldValue.length; i++) {
+                    if (/\d/.test(oldValue[i])) {
+                        digitsBeforeCursor++;
+                    }
+                }
 
                 // Apply different formatting based on country code
                 let formattedValue = '';
@@ -833,11 +844,20 @@
                 if (formattedValue !== rawValue) {
                     input.value = formattedValue;
 
-                    // Adjust cursor position
-                    if (cursorPos > input.value.length) {
-                        cursorPos = input.value.length;
+                    // Calculate new cursor position based on digit count
+                    let newCursorPos = 0;
+                    let digitCount = 0;
+                    
+                    // Find cursor position by counting digits up to the desired count
+                    for (let i = 0; i < formattedValue.length && digitCount < digitsBeforeCursor; i++) {
+                        if (/\d/.test(formattedValue[i])) {
+                            digitCount++;
+                        }
+                        newCursorPos = i + 1;
                     }
-                    input.setSelectionRange(cursorPos, cursorPos);
+
+                    // Set cursor position immediately without setTimeout for better responsiveness
+                    input.setSelectionRange(newCursorPos, newCursorPos);
                 }
             });
 

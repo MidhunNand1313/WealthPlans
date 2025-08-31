@@ -5,16 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Retirement Plans | SecureBank</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
   emailjs.init("qmfui_iW6AVaFVyKP"); 
 </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-      <style>
+    <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html {
+            height: 100vh;
+            height: 100svh; /* Small viewport height - ignores keyboard */
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
         }
 
         body {
@@ -22,7 +31,13 @@
             line-height: 1.6;
             color: #1a1a1a;
             background: linear-gradient(135deg, #3b82f6 0%, #ff0080 50%, #8e24aa 100%);
-            min-height: 100vh;
+            height: 100vh;
+            height: 100svh; /* Small viewport height - ignores keyboard */
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            margin: 0;
+            padding: 0;
         }
 
         .main-container {
@@ -30,15 +45,22 @@
             padding: 16px;
             max-width: 400px;
             margin: 0 auto;
+            height: 100vh;
+            height: 100svh; /* Small viewport height - ignores keyboard */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
+        /* Enhanced Header */
         .header {
-    display: flex;           /* horizontal layout */
-    align-items: center;     /* vertically center icon & text */
-    text-align: left;
-    gap: 12px;               /* space between icon and heading */
-    padding: 20px 16px 32px; /* keep existing padding */
-      }
+            display: flex;
+            align-items: center;
+            text-align: left;
+            gap: 12px;
+            padding: 20px 16px 32px;
+            flex-shrink: 0;
+        }
 
         .header::before {
             content: '';
@@ -49,6 +71,7 @@
             height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
             animation: float 6s ease-in-out infinite;
+            pointer-events: none;
         }
 
         @keyframes float {
@@ -56,30 +79,30 @@
             50% { transform: translateY(-10px) rotate(180deg); }
         }
 
-      .header-icon {
-    width: 50px;           /* smaller width */
-    height: 50px;          /* smaller height */
-    margin: 0;             /* left-align */
-    flex-shrink: 0;        /* prevent shrinking */
-    border-radius: 12px;   /* slightly smaller rounding */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255,255,255,0.15);
-    font-size: 24px;       /* reduce icon font-size if using emoji fallback */
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
-}
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0;
+            flex-shrink: 0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.15);
+            font-size: 24px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
 
-     .header h1 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: white;
-    margin: 0; /* remove bottom margin so it stays on same line as icon */
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    position: relative;
-    z-index: 1;
-}
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
 
         .header p {
             font-size: 0.95rem;
@@ -97,7 +120,18 @@
             border-radius: 20px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             overflow: hidden;
-            margin-bottom: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0; /* Important for flexbox scrolling */
+        }
+
+        /* Make content scrollable internally if needed */
+        .content-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            min-height: 0;
         }
 
         /* Plans Section */
@@ -144,10 +178,6 @@
 
         .plan-item:active {
             transform: scale(0.98);
-        }
-
-        .plan-item:active::before {
-            transform: scaleY(1);
         }
 
         .plan-item h3 {
@@ -203,11 +233,14 @@
             padding: 14px 16px;
             border: 1px solid #d1d5db;
             border-radius: 10px;
-            font-size: 0.95rem;
+            font-size: 16px; /* Prevents zoom on iOS */
             transition: all 0.2s ease;
             background: white;
             -webkit-appearance: none;
             appearance: none;
+            /* Prevent viewport changes */
+            -webkit-user-select: text;
+            user-select: text;
         }
 
         .form-group input:focus {
@@ -220,7 +253,69 @@
             color: #9ca3af;
         }
 
-        /* Toggle Styles - Mobile Optimized */
+        /* Phone Input Container - Integrated Design */
+        .phone-input-container {
+            position: relative;
+            display: flex;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            background: white;
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+
+        .phone-input-container:focus-within {
+            border-color: #ff0080;
+            box-shadow: 0 0 0 3px rgba(255, 0, 128, 0.1);
+        }
+
+        .country-code-dropdown {
+            flex-shrink: 0;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .country-code-select {
+            padding: 14px 4px 14px 8px;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%23666" d="M2 0L0 2h4zm0 5L0 3h4z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 2px center;
+            background-size: 8px;
+            font-weight: 500;
+            color: #374151;
+            outline: none;
+            min-width: 70px;
+        }
+
+        .phone-number-input {
+            flex: 1;
+        }
+
+        .phone-number-input input {
+            width: 100%;
+            padding: 14px 16px;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .phone-number-input input::placeholder {
+            color: #9ca3af;
+        }
+
+        /* Flag Emoji Styles */
+        .flag-emoji {
+            font-size: 14px;
+            margin-right: 6px;
+        }
+
+        /* Toggle Styles */
         .toggle-group {
             display: flex;
             align-items: center;
@@ -288,7 +383,7 @@
             transform: translateX(22px);
         }
 
-        /* Submit Button - Mobile Optimized */
+        /* Submit Button */
         .submit-btn {
             width: 100%;
             padding: 16px;
@@ -360,11 +455,54 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* Mobile-specific fixes */
+        @media (max-width: 767px) {
+            html, body {
+                position: fixed;
+                overflow: hidden;
+                height: 100vh;
+                height: 100svh; /* Small viewport - ignores keyboard */
+                width: 100%;
+            }
+            
+            .main-container {
+                height: 100vh;
+                height: 100svh; /* Small viewport - ignores keyboard */
+                overflow: hidden;
+            }
+
+            /* Prevent iOS zoom on input focus */
+            input, textarea, select {
+                font-size: 16px !important;
+                transform: translateZ(0);
+            }
+
+            /* Stabilize header during keyboard events */
+            .header {
+                position: relative;
+                z-index: 1000;
+            }
+
+            /* Prevent layout shift on focus */
+            .form-group input:focus, .phone-input-container:focus-within {
+                transform: translateZ(0); /* Force GPU acceleration */
+            }
+
+            .phone-input-container {
+                flex-direction: row;
+            }
+
+            .country-code-dropdown {
+                min-width: 70px;
+            }
+        }
+
         /* Desktop Styles */
         @media (min-width: 768px) {
             .main-container {
                 max-width: 600px;
                 padding: 20px;
+                min-height: 100vh;
             }
 
             .header {
@@ -389,6 +527,7 @@
 
             .content-container {
                 margin-bottom: 40px;
+                max-height: none;
             }
 
             .plans-section {
@@ -412,13 +551,16 @@
                 box-shadow: 0 8px 24px rgba(0,0,0,0.1);
             }
 
-            .plan-item:hover::before {
-                transform: scaleY(1);
-            }
-
             .submit-btn:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 8px 24px rgba(255, 0, 128, 0.3);
+            }
+        }
+
+        /* Additional mobile scroll fixes */
+        @supports (-webkit-appearance: none) {
+            .main-container {
+                min-height: -webkit-fill-available;
             }
         }
     </style>
@@ -426,17 +568,20 @@
 <body>
     <div class="main-container">
         <header class="header">
-  <div class="header-icon">
-            <img src="retirement.png" alt="Family Icon" style="width: 100%; height: 100%;">
-        </div>
-                    <h1>Retirement Plans</h1>
+            <div class="header-icon">
+                <img src="retirement.png" alt="Retirement Icon" style="width: 100%; height: 100%;">
+            </div>
+            <div>
+                <h1>Retirement Plans</h1>
+            </div>
         </header>
 
         <div class="content-container">
-            <div class="plans-section">
-                <h2 class="section-title">Available Retirement Plans</h2>
-                
-                <div class="plans-list">
+            <div class="content-wrapper">
+                <div class="plans-section">
+                    <h2 class="section-title">Available Retirement Plans</h2>
+                    
+                    <div class="plans-list">
                     <div class="plan-item">
                         <h3>Smart Annuity Income</h3>
                         <p>Offers regular income payouts after retirement, providing financial security throughout your retirement years.</p>
@@ -454,47 +599,104 @@
                 </div>
             </div>
 
-           <div class="form-section">
-                <h2 class="form-title">Get Expert Consultation</h2>
-                <p class="form-subtitle">Our financial advisors will help you choose the right protection plan</p>
-                
-                <form id="contactForm">
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="contact">Phone Number</label>
-                        <input type="tel" id="contact" name="contact" placeholder="+91 XXXXX XXXXX" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
-                    </div>
-
-                    <div class="toggle-group">
-                        <span>Non-Resident Indian (NRI)</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="nri" name="nri">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                    <button type="submit" class="submit-btn">Request Consultation</button>
+                <div class="form-section">
+                    <h2 class="form-title">Get Expert Consultation</h2>
+                    <p class="form-subtitle">Our financial advisors will help you choose the right retirement plan</p>
                     
-                    <div class="success-message" id="successMessage">
-                        <span class="success-icon">✓</span>
-                        Thank you! Our expert will contact you within 24 hours.
-                    </div>
-                </form>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact">Phone Number</label>
+                            <div class="phone-input-container">
+                                <div class="country-code-dropdown">
+                                    <select class="country-code-select" id="countryCode" name="countryCode">
+                                        <option value="+91" data-flag="🇮🇳">🇮🇳 +91</option>
+                                        <option value="+1" data-flag="🇺🇸">🇺🇸 +1</option>
+                                        <option value="+44" data-flag="🇬🇧">🇬🇧 +44</option>
+                                        <option value="+971" data-flag="🇦🇪">🇦🇪 +971</option>
+                                        <option value="+65" data-flag="🇸🇬">🇸🇬 +65</option>
+                                        <option value="+61" data-flag="🇦🇺">🇦🇺 +61</option>
+                                        <option value="+1" data-flag="🇨🇦">🇨🇦 +1</option>
+                                        <option value="+966" data-flag="🇸🇦">🇸🇦 +966</option>
+                                        <option value="+974" data-flag="🇶🇦">🇶🇦 +974</option>
+                                        <option value="+60" data-flag="🇲🇾">🇲🇾 +60</option>
+                                        <option value="+81" data-flag="🇯🇵">🇯🇵 +81</option>
+                                        <option value="+82" data-flag="🇰🇷">🇰🇷 +82</option>
+                                        <option value="+49" data-flag="🇩🇪">🇩🇪 +49</option>
+                                        <option value="+33" data-flag="🇫🇷">🇫🇷 +33</option>
+                                        <option value="+39" data-flag="🇮🇹">🇮🇹 +39</option>
+                                        <option value="+34" data-flag="🇪🇸">🇪🇸 +34</option>
+                                        <option value="+31" data-flag="🇳🇱">🇳🇱 +31</option>
+                                        <option value="+41" data-flag="🇨🇭">🇨🇭 +41</option>
+                                        <option value="+46" data-flag="🇸🇪">🇸🇪 +46</option>
+                                        <option value="+47" data-flag="🇳🇴">🇳🇴 +47</option>
+                                    </select>
+                                </div>
+                                <div class="phone-number-input">
+                                    <input type="tel" id="contact" name="contact" placeholder="XXXXX XXXXX" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="plan">Interested Plan</label>
+                            <select id="plan" name="plan" required style="width: 100%; padding: 14px 16px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 16px; background: white; -webkit-appearance: none; appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 4 5\"><path fill=\"%23666\" d=\"M2 0L0 2h4zm0 5L0 3h4z\"/></svg>'); background-repeat: no-repeat; background-position: right 12px center; background-size: 12px; color: #374151; cursor: pointer;">
+                                <option value="">Select a Retirement plan</option>
+                                <option value="Smart Annuity Income - Retirement Plan">Smart Annuity Income</option>
+                                <option value="Retire Smart Plus - Retirement Plan">Retire Smart Plus</option>
+                                <option value="Smart Annuity Plus - Retirement Plan">Smart Annuity Plus</option>
+                                <option value="General Inquiry On RetirementPlan">General Inquiry - Need guidance on all plans</option>
+                            </select>
+                        </div>
+
+                        <div class="toggle-group">
+                            <span>Non-Resident Indian (NRI)</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="nri" name="nri">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Request Consultation</button>
+                        
+                        <div class="success-message" id="successMessage">
+                            <span class="success-icon">✓</span>
+                            Thank you! Our expert will contact you within 24 hours.
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         $(document).ready(function() {
+            // Completely prevent any scrolling beyond content
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            
+            // Prevent touch scrolling and elastic bounce
+            document.addEventListener('touchmove', function(e) {
+                // Only allow scrolling within the content wrapper
+                if (!e.target.closest('.content-wrapper')) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            // Prevent scroll events on window
+            window.addEventListener('scroll', function(e) {
+                window.scrollTo(0, 0);
+            }, { passive: false });
+
             // Add loading animations on page load
             $('.plan-item').each(function(index) {
                 $(this).css({
@@ -508,105 +710,200 @@
             });
 
             // Form submission with enhanced mobile UX
-           $('#contactForm').submit(function(e) {
-    e.preventDefault();
-    const form = this;
+            $('#contactForm').submit(function(e) {
+                e.preventDefault();
+                const form = this;
 
-    // Add loading state
-    $(form).addClass('loading');
-    $('.submit-btn').text('');
+                // Get the selected country code and phone number
+                const countryCode = $('#countryCode').val();
+                const phoneNumber = $('#contact').val();
+                const fullPhoneNumber = countryCode + ' ' + phoneNumber;
 
-    // Send form using EmailJS
-    emailjs.sendForm('service_s36q7fe', 'template_kdgl38n', form)
-    .then(function(response) {
-        console.log('SUCCESS!', response.status, response.text);
+                // Add loading state
+                $(form).addClass('loading');
+                $('.submit-btn').text('');
 
-        // Remove loading state and reset button text
-        $(form).removeClass('loading');
-        $('.submit-btn').text('Request Consultation');
+                // Prepare form data for EmailJS
+                const formData = {
+                    name: $('#name').val(),
+                    contact: fullPhoneNumber,
+                    email: $('#email').val(),
+                    plan: $('#plan').val(),
+                    nri: $('#nri').is(':checked') ? 'Yes' : 'No'
+                };
 
-        // Show success message
-        $('#successMessage').slideDown(300);
+                // Send form using EmailJS
+                emailjs.send('service_s36q7fe', 'template_kdgl38n', formData)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
 
-        // Reset form and hide message after 4 seconds
-        setTimeout(() => {
-            form.reset();
-            $('#successMessage').slideUp(300);
-        }, 4000);
-    }, function(error) {
-        console.log('FAILED...', error);
-        alert('Oops! Something went wrong; please try again.');
+                    // Remove loading state and reset button text
+                    $(form).removeClass('loading');
+                    $('.submit-btn').text('Request Consultation');
 
-        // Remove loading state and reset button text
-        $(form).removeClass('loading');
-        $('.submit-btn').text('Request Consultation');
-    });
-});
+                    // Show success message
+                    $('#successMessage').slideDown(300);
 
-
-            $('#contact').on('input', function (e) {
-    let input = this;
-    let cursorPos = input.selectionStart;
-    let rawValue = input.value;
-
-    // Remove all non-digit characters except leading '+91'
-    let numbersOnly = rawValue.replace(/\D/g, '');
-
-    // Check if it already starts with country code
-    if (numbersOnly.startsWith('91')) {
-        numbersOnly = numbersOnly.substring(2);
-    }
-
-    // Limit to 10 digits max
-    if (numbersOnly.length > 10) {
-        numbersOnly = numbersOnly.substring(0, 10);
-    }
-
-    // Build formatted value
-    let formattedValue = '+91 ';
-    if (numbersOnly.length <= 5) {
-        formattedValue += numbersOnly;
-    } else {
-        formattedValue += numbersOnly.substring(0, 5) + ' ' + numbersOnly.substring(5);
-    }
-
-    // Only update if formatted string differs (to prevent infinite loop)
-    if (formattedValue !== rawValue) {
-        input.value = formattedValue;
-
-        // Adjust cursor position based on change
-        if (cursorPos <= 3) {
-            cursorPos = 4;  // after "+91 "
-        } else if (cursorPos > input.value.length) {
-            cursorPos = input.value.length;
-        }
-        input.setSelectionRange(cursorPos, cursorPos);
-    }
-});
-
-
-            // Enhanced mobile form interactions
-            $('.form-group input').on('focus', function() {
-                $(this).parent().addClass('focused');
-                // Scroll into view on mobile
-                if (window.innerWidth <= 767) {
+                    // Reset form and hide message after 4 seconds
                     setTimeout(() => {
-                        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
+                        form.reset();
+                        $('#successMessage').slideUp(300);
+                    }, 4000);
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    alert('Oops! Something went wrong; please try again.');
+
+                    // Remove loading state and reset button text
+                    $(form).removeClass('loading');
+                    $('.submit-btn').text('Request Consultation');
+                });
+            });
+
+            // Enhanced phone number formatting based on country code
+              $('#contact').on('input', function (e) {
+                let input = this;
+                let cursorPos = input.selectionStart;
+                let rawValue = input.value;
+                const selectedCountryCode = $('#countryCode').val();
+
+                // Store the old value before formatting
+                let oldValue = rawValue;
+
+                // Remove all non-digit characters to count actual digits
+                let numbersOnly = rawValue.replace(/\D/g, '');
+
+                // Count digits before cursor position in the original value
+                let digitsBeforeCursor = 0;
+                for (let i = 0; i < cursorPos && i < oldValue.length; i++) {
+                    if (/\d/.test(oldValue[i])) {
+                        digitsBeforeCursor++;
+                    }
+                }
+
+                // Apply different formatting based on country code
+                let formattedValue = '';
+                let maxLength = 15; // Default max length
+
+                switch(selectedCountryCode) {
+                    case '+91': // India
+                        maxLength = 10;
+                        if (numbersOnly.length > maxLength) {
+                            numbersOnly = numbersOnly.substring(0, maxLength);
+                        }
+                        if (numbersOnly.length <= 5) {
+                            formattedValue = numbersOnly;
+                        } else {
+                            formattedValue = numbersOnly.substring(0, 5) + ' ' + numbersOnly.substring(5);
+                        }
+                        break;
+                    
+                    case '+1': // US/Canada
+                        maxLength = 10;
+                        if (numbersOnly.length > maxLength) {
+                            numbersOnly = numbersOnly.substring(0, maxLength);
+                        }
+                        if (numbersOnly.length <= 3) {
+                            formattedValue = numbersOnly;
+                        } else if (numbersOnly.length <= 6) {
+                            formattedValue = numbersOnly.substring(0, 3) + ' ' + numbersOnly.substring(3);
+                        } else {
+                            formattedValue = numbersOnly.substring(0, 3) + ' ' + numbersOnly.substring(3, 6) + ' ' + numbersOnly.substring(6);
+                        }
+                        break;
+                    
+                    case '+44': // UK
+                        maxLength = 11;
+                        if (numbersOnly.length > maxLength) {
+                            numbersOnly = numbersOnly.substring(0, maxLength);
+                        }
+                        if (numbersOnly.length <= 4) {
+                            formattedValue = numbersOnly;
+                        } else if (numbersOnly.length <= 7) {
+                            formattedValue = numbersOnly.substring(0, 4) + ' ' + numbersOnly.substring(4);
+                        } else {
+                            formattedValue = numbersOnly.substring(0, 4) + ' ' + numbersOnly.substring(4, 7) + ' ' + numbersOnly.substring(7);
+                        }
+                        break;
+                    
+                    default: // Other countries - basic formatting
+                        maxLength = 12;
+                        if (numbersOnly.length > maxLength) {
+                            numbersOnly = numbersOnly.substring(0, maxLength);
+                        }
+                        if (numbersOnly.length <= 4) {
+                            formattedValue = numbersOnly;
+                        } else if (numbersOnly.length <= 8) {
+                            formattedValue = numbersOnly.substring(0, 4) + ' ' + numbersOnly.substring(4);
+                        } else {
+                            formattedValue = numbersOnly.substring(0, 4) + ' ' + numbersOnly.substring(4, 8) + ' ' + numbersOnly.substring(8);
+                        }
+                        break;
+                }
+
+                // Only update if formatted string differs
+                if (formattedValue !== rawValue) {
+                    input.value = formattedValue;
+
+                    // Calculate new cursor position based on digit count
+                    let newCursorPos = 0;
+                    let digitCount = 0;
+                    
+                    // Find cursor position by counting digits up to the desired count
+                    for (let i = 0; i < formattedValue.length && digitCount < digitsBeforeCursor; i++) {
+                        if (/\d/.test(formattedValue[i])) {
+                            digitCount++;
+                        }
+                        newCursorPos = i + 1;
+                    }
+
+                    // Set cursor position immediately without setTimeout for better responsiveness
+                    input.setSelectionRange(newCursorPos, newCursorPos);
+                }
+            });
+
+            // Clear and reformat phone number when country code changes
+            $('#countryCode').on('change', function() {
+                $('#contact').val('').trigger('input');
+            });
+
+            // Enhanced mobile form interactions with keyboard handling
+            $('.form-group input, .country-code-select').on('focus', function() {
+                $(this).parent().addClass('focused');
+                
+                // Prevent layout shifts on mobile
+                if (window.innerWidth <= 767) {
+                    // Lock viewport to prevent shifts
+                    const viewport = document.querySelector("meta[name=viewport]");
+                    if (viewport) {
+                        viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+                    }
+                    
+                    // Smooth scroll to input without disrupting layout
+                    setTimeout(() => {
+                        const rect = this.getBoundingClientRect();
+                        const container = document.querySelector('.content-wrapper');
+                        if (rect.bottom > window.innerHeight * 0.6) {
+                            container.scrollTo({
+                                top: container.scrollTop + (rect.top - window.innerHeight * 0.3),
+                                behavior: 'smooth'
+                            });
+                        }
+                    }, 100);
                 }
             }).on('blur', function() {
                 $(this).parent().removeClass('focused');
-            });
-
-            // Touch feedback for plan items
-            $('.plan-item').on('touchstart', function() {
-                $(this).css('background', 'linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%)');
-            }).on('touchend', function() {
-                $(this).css('background', 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)');
+                
+                // Restore normal viewport behavior
+                if (window.innerWidth <= 767) {
+                    const viewport = document.querySelector("meta[name=viewport]");
+                    if (viewport) {
+                        viewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
+                    }
+                }
             });
 
             // Form validation with visual feedback
-            $('input[required]').on('blur', function() {
+            $('input[required], select[required]').on('blur', function() {
                 const value = $(this).val().trim();
                 if (value === '') {
                     $(this).css({
@@ -627,10 +924,10 @@
             });
 
             // Reset border color on focus
-            $('input').on('focus', function() {
+            $('input, .country-code-select, select').on('focus', function() {
                 $(this).css({
-                    'border-color': '#ff1744',
-                    'box-shadow': '0 0 0 3px rgba(255, 23, 68, 0.1)'
+                    'border-color': '#ff0080',
+                    'box-shadow': '0 0 0 3px rgba(255, 0, 128, 0.1)'
                 });
             });
 
@@ -640,14 +937,14 @@
                 return emailRegex.test(email);
             }
 
-            // Haptic feedback simulation for supported devices
+            // Haptic feedback simulation
             function vibrate() {
                 if (navigator.vibrate) {
                     navigator.vibrate(50);
                 }
             }
 
-            $('.submit-btn, .back-btn').on('touchstart', vibrate);
+            $('.submit-btn').on('touchstart', vibrate);
         });
     </script>
 </body>
