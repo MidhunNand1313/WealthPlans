@@ -18,12 +18,26 @@
             box-sizing: border-box;
         }
 
+        html {
+            height: 100vh;
+            height: 100svh; /* Small viewport height - ignores keyboard */
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
             color: #1a1a1a;
             background: linear-gradient(135deg, #3b82f6 0%, #ff0080 50%, #8e24aa 100%);
-            min-height: 100vh;
+            height: 100vh;
+            height: 100svh; /* Small viewport height - ignores keyboard */
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            margin: 0;
+            padding: 0;
         }
 
         .main-container {
@@ -31,16 +45,22 @@
             padding: 16px;
             max-width: 400px;
             margin: 0 auto;
+            height: 100vh;
+            height: 100svh; /* Small viewport height - ignores keyboard */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
         /* Enhanced Header */
-.header {
-    display: flex;           /* horizontal layout */
-    align-items: center;     /* vertically center icon & text */
-    text-align: left;
-    gap: 12px;               /* space between icon and heading */
-    padding: 20px 16px 32px; /* keep existing padding */
-}
+        .header {
+            display: flex;
+            align-items: center;
+            text-align: left;
+            gap: 12px;
+            padding: 20px 16px 32px;
+            flex-shrink: 0;
+        }
 
         .header::before {
             content: '';
@@ -51,6 +71,7 @@
             height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
             animation: float 6s ease-in-out infinite;
+            pointer-events: none;
         }
 
         @keyframes float {
@@ -58,31 +79,30 @@
             50% { transform: translateY(-10px) rotate(180deg); }
         }
 
-      .header-icon {
-    width: 50px;           /* smaller width */
-    height: 50px;          /* smaller height */
-    margin: 0;             /* left-align */
-    flex-shrink: 0;        /* prevent shrinking */
-    border-radius: 12px;   /* slightly smaller rounding */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255,255,255,0.15);
-    font-size: 24px;       /* reduce icon font-size if using emoji fallback */
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
-}
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0;
+            flex-shrink: 0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.15);
+            font-size: 24px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
 
-     .header h1 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: white;
-    margin: 0; /* remove bottom margin so it stays on same line as icon */
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    position: relative;
-    z-index: 1;
-}
-
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
 
         .header p {
             font-size: 0.95rem;
@@ -100,7 +120,18 @@
             border-radius: 20px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             overflow: hidden;
-            margin-bottom: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0; /* Important for flexbox scrolling */
+        }
+
+        /* Make content scrollable internally if needed */
+        .content-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            min-height: 0;
         }
 
         /* Plans Section */
@@ -147,10 +178,6 @@
 
         .plan-item:active {
             transform: scale(0.98);
-        }
-
-        .plan-item:active::before {
-            transform: scaleY(1);
         }
 
         .plan-item h3 {
@@ -206,11 +233,14 @@
             padding: 14px 16px;
             border: 1px solid #d1d5db;
             border-radius: 10px;
-            font-size: 0.95rem;
+            font-size: 16px; /* Prevents zoom on iOS */
             transition: all 0.2s ease;
             background: white;
             -webkit-appearance: none;
             appearance: none;
+            /* Prevent viewport changes */
+            -webkit-user-select: text;
+            user-select: text;
         }
 
         .form-group input:focus {
@@ -223,7 +253,7 @@
             color: #9ca3af;
         }
 
-        /* Toggle Styles - Mobile Optimized */
+        /* Toggle Styles */
         .toggle-group {
             display: flex;
             align-items: center;
@@ -291,7 +321,7 @@
             transform: translateX(22px);
         }
 
-        /* Submit Button - Mobile Optimized */
+        /* Submit Button */
         .submit-btn {
             width: 100%;
             padding: 16px;
@@ -363,11 +393,49 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* Mobile-specific fixes */
+        @media (max-width: 767px) {
+            html, body {
+                position: fixed;
+                overflow: hidden;
+                height: 100vh;
+                height: 100svh; /* Small viewport - ignores keyboard */
+                width: 100%;
+            }
+            
+            .main-container {
+                height: 100vh;
+                height: 100svh; /* Small viewport - ignores keyboard */
+                overflow: hidden;
+            }
+
+            /* Prevent iOS zoom on input focus */
+            input, textarea, select {
+                font-size: 16px !important;
+                transform: translateZ(0);
+            }
+
+            /* Stabilize header during keyboard events */
+            .header {
+                position: relative;
+                z-index: 1000;
+            }
+
+            /* Prevent layout shift on focus */
+            .form-group input:focus {
+                outline: none;
+                border-color: #ff0080;
+                box-shadow: 0 0 0 3px rgba(255, 0, 128, 0.1);
+                transform: translateZ(0); /* Force GPU acceleration */
+            }
+        }
+
         /* Desktop Styles */
         @media (min-width: 768px) {
             .main-container {
                 max-width: 600px;
                 padding: 20px;
+                min-height: 100vh;
             }
 
             .header {
@@ -392,6 +460,7 @@
 
             .content-container {
                 margin-bottom: 40px;
+                max-height: none;
             }
 
             .plans-section {
@@ -415,94 +484,113 @@
                 box-shadow: 0 8px 24px rgba(0,0,0,0.1);
             }
 
-            .plan-item:hover::before {
-                transform: scaleY(1);
-            }
-
             .submit-btn:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 8px 24px rgba(255, 0, 128, 0.3);
             }
         }
+
+        /* Additional mobile scroll fixes */
+        @supports (-webkit-appearance: none) {
+            .main-container {
+                min-height: -webkit-fill-available;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="main-container">
-  <header class="header">
-    <div class="header-icon">
-        <img src="family.png" alt="Family Icon" style="width: 100%; height: 100%;">
-    </div>
-    <div>
-        <h1>Protection Plans</h1>
-    </div>
-</header>
-
-</div>
-
+    <div class="main-container">
+        <header class="header">
+            <div class="header-icon">
+                <img src="family.png" alt="Family Icon" style="width: 100%; height: 100%;">
+            </div>
+            <div>
+                <h1>Protection Plans</h1>
+            </div>
+        </header>
 
         <div class="content-container">
-            <div class="plans-section">
-                <h2 class="section-title">Available Protection Plans</h2>
-                
-                <div class="plans-list">
-                    <div class="plan-item">
-                        <h3>Smart Shield</h3>
-                        <p>Comprehensive term life insurance with critical illness coverage and flexible premium payment options. Provides financial security for your family with affordable premiums.</p>
-                    </div>
+            <div class="content-wrapper">
+                <div class="plans-section">
+                    <h2 class="section-title">Available Protection Plans</h2>
+                    
+                    <div class="plans-list">
+                        <div class="plan-item">
+                            <h3>Smart Shield</h3>
+                            <p>Comprehensive term life insurance with critical illness coverage and flexible premium payment options. Provides financial security for your family with affordable premiums.</p>
+                        </div>
 
-                    <div class="plan-item">
-                        <h3>Smart Swadhan Neo</h3>
-                        <p>Women-focused protection plan with maturity benefits and special premium discounts. Designed to provide financial independence and security for women at every life stage.</p>
-                    </div>
+                        <div class="plan-item">
+                            <h3>Smart Swadhan Neo</h3>
+                            <p>Women-focused protection plan with maturity benefits and special premium discounts. Designed to provide financial independence and security for women at every life stage.</p>
+                        </div>
 
-                    <div class="plan-item">
-                        <h3>Smart Shield Plus</h3>
-                        <p>Enhanced protection with accidental death and disability benefits. Includes waiver of premium on disability and comprehensive coverage for unexpected life events.</p>
+                        <div class="plan-item">
+                            <h3>Smart Shield Plus</h3>
+                            <p>Enhanced protection with accidental death and disability benefits. Includes waiver of premium on disability and comprehensive coverage for unexpected life events.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-section">
-                <h2 class="form-title">Get Expert Consultation</h2>
-                <p class="form-subtitle">Our financial advisors will help you choose the right protection plan</p>
-                
-                <form id="contactForm">
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="contact">Phone Number</label>
-                        <input type="tel" id="contact" name="contact" placeholder="+91 XXXXX XXXXX" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
-                    </div>
-
-                    <div class="toggle-group">
-                        <span>Non-Resident Indian (NRI)</span>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="nri" name="nri">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                    <button type="submit" class="submit-btn">Request Consultation</button>
+                <div class="form-section">
+                    <h2 class="form-title">Get Expert Consultation</h2>
+                    <p class="form-subtitle">Our financial advisors will help you choose the right protection plan</p>
                     
-                    <div class="success-message" id="successMessage">
-                        <span class="success-icon">✓</span>
-                        Thank you! Our expert will contact you within 24 hours.
-                    </div>
-                </form>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact">Phone Number</label>
+                            <input type="tel" id="contact" name="contact" placeholder="+91 XXXXX XXXXX" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                        </div>
+
+                        <div class="toggle-group">
+                            <span>Non-Resident Indian (NRI)</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="nri" name="nri">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Request Consultation</button>
+                        
+                        <div class="success-message" id="successMessage">
+                            <span class="success-icon">✓</span>
+                            Thank you! Our expert will contact you within 24 hours.
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         $(document).ready(function() {
+            // Completely prevent any scrolling beyond content
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            
+            // Prevent touch scrolling and elastic bounce
+            document.addEventListener('touchmove', function(e) {
+                // Only allow scrolling within the content wrapper
+                if (!e.target.closest('.content-wrapper')) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            // Prevent scroll events on window
+            window.addEventListener('scroll', function(e) {
+                window.scrollTo(0, 0);
+            }, { passive: false });
+
             // Add loading animations on page load
             $('.plan-item').each(function(index) {
                 $(this).css({
@@ -516,101 +604,115 @@
             });
 
             // Form submission with enhanced mobile UX
-           $('#contactForm').submit(function(e) {
-    e.preventDefault();
-    const form = this;
+            $('#contactForm').submit(function(e) {
+                e.preventDefault();
+                const form = this;
 
-    // Add loading state
-    $(form).addClass('loading');
-    $('.submit-btn').text('');
+                // Add loading state
+                $(form).addClass('loading');
+                $('.submit-btn').text('');
 
-    // Send form using EmailJS
-    emailjs.sendForm('service_s36q7fe', 'template_kdgl38n', form)
-    .then(function(response) {
-        console.log('SUCCESS!', response.status, response.text);
+                // Send form using EmailJS
+                emailjs.sendForm('service_s36q7fe', 'template_kdgl38n', form)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
 
-        // Remove loading state and reset button text
-        $(form).removeClass('loading');
-        $('.submit-btn').text('Request Consultation');
+                    // Remove loading state and reset button text
+                    $(form).removeClass('loading');
+                    $('.submit-btn').text('Request Consultation');
 
-        // Show success message
-        $('#successMessage').slideDown(300);
+                    // Show success message
+                    $('#successMessage').slideDown(300);
 
-        // Reset form and hide message after 4 seconds
-        setTimeout(() => {
-            form.reset();
-            $('#successMessage').slideUp(300);
-        }, 4000);
-    }, function(error) {
-        console.log('FAILED...', error);
-        alert('Oops! Something went wrong; please try again.');
+                    // Reset form and hide message after 4 seconds
+                    setTimeout(() => {
+                        form.reset();
+                        $('#successMessage').slideUp(300);
+                    }, 4000);
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    alert('Oops! Something went wrong; please try again.');
 
-        // Remove loading state and reset button text
-        $(form).removeClass('loading');
-        $('.submit-btn').text('Request Consultation');
-    });
-});
-
+                    // Remove loading state and reset button text
+                    $(form).removeClass('loading');
+                    $('.submit-btn').text('Request Consultation');
+                });
+            });
 
             $('#contact').on('input', function (e) {
-    let input = this;
-    let cursorPos = input.selectionStart;
-    let rawValue = input.value;
+                let input = this;
+                let cursorPos = input.selectionStart;
+                let rawValue = input.value;
 
-    // Remove all non-digit characters except leading '+91'
-    let numbersOnly = rawValue.replace(/\D/g, '');
+                // Remove all non-digit characters except leading '+91'
+                let numbersOnly = rawValue.replace(/\D/g, '');
 
-    // Check if it already starts with country code
-    if (numbersOnly.startsWith('91')) {
-        numbersOnly = numbersOnly.substring(2);
-    }
+                // Check if it already starts with country code
+                if (numbersOnly.startsWith('91')) {
+                    numbersOnly = numbersOnly.substring(2);
+                }
 
-    // Limit to 10 digits max
-    if (numbersOnly.length > 10) {
-        numbersOnly = numbersOnly.substring(0, 10);
-    }
+                // Limit to 10 digits max
+                if (numbersOnly.length > 10) {
+                    numbersOnly = numbersOnly.substring(0, 10);
+                }
 
-    // Build formatted value
-    let formattedValue = '+91 ';
-    if (numbersOnly.length <= 5) {
-        formattedValue += numbersOnly;
-    } else {
-        formattedValue += numbersOnly.substring(0, 5) + ' ' + numbersOnly.substring(5);
-    }
+                // Build formatted value
+                let formattedValue = '+91 ';
+                if (numbersOnly.length <= 5) {
+                    formattedValue += numbersOnly;
+                } else {
+                    formattedValue += numbersOnly.substring(0, 5) + ' ' + numbersOnly.substring(5);
+                }
 
-    // Only update if formatted string differs (to prevent infinite loop)
-    if (formattedValue !== rawValue) {
-        input.value = formattedValue;
+                // Only update if formatted string differs
+                if (formattedValue !== rawValue) {
+                    input.value = formattedValue;
 
-        // Adjust cursor position based on change
-        if (cursorPos <= 3) {
-            cursorPos = 4;  // after "+91 "
-        } else if (cursorPos > input.value.length) {
-            cursorPos = input.value.length;
-        }
-        input.setSelectionRange(cursorPos, cursorPos);
-    }
-});
+                    // Adjust cursor position
+                    if (cursorPos <= 3) {
+                        cursorPos = 4;
+                    } else if (cursorPos > input.value.length) {
+                        cursorPos = input.value.length;
+                    }
+                    input.setSelectionRange(cursorPos, cursorPos);
+                }
+            });
 
-
-            // Enhanced mobile form interactions
+            // Enhanced mobile form interactions with keyboard handling
             $('.form-group input').on('focus', function() {
                 $(this).parent().addClass('focused');
-                // Scroll into view on mobile
+                
+                // Prevent layout shifts on mobile
                 if (window.innerWidth <= 767) {
+                    // Lock viewport to prevent shifts
+                    const viewport = document.querySelector("meta[name=viewport]");
+                    if (viewport) {
+                        viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+                    }
+                    
+                    // Smooth scroll to input without disrupting layout
                     setTimeout(() => {
-                        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
+                        const rect = this.getBoundingClientRect();
+                        const container = document.querySelector('.content-wrapper');
+                        if (rect.bottom > window.innerHeight * 0.6) {
+                            container.scrollTo({
+                                top: container.scrollTop + (rect.top - window.innerHeight * 0.3),
+                                behavior: 'smooth'
+                            });
+                        }
+                    }, 100);
                 }
             }).on('blur', function() {
                 $(this).parent().removeClass('focused');
-            });
-
-            // Touch feedback for plan items
-            $('.plan-item').on('touchstart', function() {
-                $(this).css('background', 'linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%)');
-            }).on('touchend', function() {
-                $(this).css('background', 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)');
+                
+                // Restore normal viewport behavior
+                if (window.innerWidth <= 767) {
+                    const viewport = document.querySelector("meta[name=viewport]");
+                    if (viewport) {
+                        viewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
+                    }
+                }
             });
 
             // Form validation with visual feedback
@@ -648,14 +750,14 @@
                 return emailRegex.test(email);
             }
 
-            // Haptic feedback simulation for supported devices
+            // Haptic feedback simulation
             function vibrate() {
                 if (navigator.vibrate) {
                     navigator.vibrate(50);
                 }
             }
 
-            $('.submit-btn, .back-btn').on('touchstart', vibrate);
+            $('.submit-btn').on('touchstart', vibrate);
         });
     </script>
 </body>
