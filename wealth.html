@@ -20,7 +20,7 @@
 
         html {
             height: 100vh;
-            height: 100svh; /* Small viewport height - ignores keyboard */
+            height: 100svh;
             overflow: hidden;
             position: fixed;
             width: 100%;
@@ -32,7 +32,7 @@
             color: #1a1a1a;
             background: linear-gradient(135deg, #3b82f6 0%, #ff0080 50%, #8e24aa 100%);
             height: 100vh;
-            height: 100svh; /* Small viewport height - ignores keyboard */
+            height: 100svh;
             overflow: hidden;
             position: fixed;
             width: 100%;
@@ -46,13 +46,12 @@
             max-width: 400px;
             margin: 0 auto;
             height: 100vh;
-            height: 100svh; /* Small viewport height - ignores keyboard */
+            height: 100svh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
 
-        /* Enhanced Header */
         .header {
             display: flex;
             align-items: center;
@@ -104,17 +103,6 @@
             z-index: 1;
         }
 
-        .header p {
-            font-size: 0.95rem;
-            color: rgba(255,255,255,0.9);
-            font-weight: 300;
-            position: relative;
-            z-index: 1;
-            max-width: 280px;
-            margin: 0 auto;
-        }
-
-        /* Content Container */
         .content-container {
             background: white;
             border-radius: 20px;
@@ -123,10 +111,9 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            min-height: 0; /* Important for flexbox scrolling */
+            min-height: 0;
         }
 
-        /* Make content scrollable internally if needed */
         .content-wrapper {
             flex: 1;
             overflow-y: auto;
@@ -134,7 +121,6 @@
             min-height: 0;
         }
 
-        /* Plans Section */
         .plans-section {
             padding: 24px 20px;
         }
@@ -193,7 +179,225 @@
             line-height: 1.4;
         }
 
-        /* Form Section */
+        .plan-item.expandable {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .expand-icon {
+            font-size: 14px;
+            color: #64748b;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            margin-left: 12px;
+        }
+
+        .plan-item.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .plan-details {
+            display: none;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .plan-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .option-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(135deg, #3b82f6, #ff0080);
+        }
+
+        .option-card.popular {
+            border-color: #ff0080;
+            box-shadow: 0 4px 12px rgba(255, 0, 128, 0.15);
+        }
+
+        .option-card.popular::before {
+            background: linear-gradient(135deg, #ff0080, #8e24aa);
+            width: 4px;
+        }
+
+        .option-card.recommended {
+            border-color: #10b981;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+        }
+
+        .option-card.recommended::before {
+            background: linear-gradient(135deg, #10b981, #059669);
+            width: 4px;
+        }
+
+        .option-card.premium-tier {
+            border-color: #f59e0b;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+        }
+
+        .option-card.premium-tier::before {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            width: 4px;
+        }
+
+        .popular-badge, .recommended-badge, .premium-tier-badge {
+            position: absolute;
+            top: -1px;
+            right: 12px;
+            padding: 4px 8px;
+            border-radius: 0 0 6px 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .popular-badge {
+            background: linear-gradient(135deg, #ff0080, #8e24aa);
+        }
+
+        .recommended-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .premium-tier-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .premium-amount {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .return-amount {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #059669;
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid #86efac;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 8px 4px;
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .benefit-label {
+            display: block;
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-bottom: 2px;
+            font-weight: 500;
+        }
+
+        .benefit-value {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .plan-note {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .plan-note p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #92400e;
+        }
+
+        .plan-highlight {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .highlight-badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #ddd6fe, #c4b5fd);
+            color: #7c3aed;
+            border: 1px solid #a78bfa;
+        }
+
+        .highlight-badge.premium {
+            background: linear-gradient(135deg, #fecaca, #fca5a5);
+            color: #dc2626;
+            border: 1px solid #f87171;
+        }
+
+        .highlight-badge.builder {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+
+        .highlight-text {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 500;
+            margin: 0;
+        }
+
         .form-section {
             background: #f8fafc;
             padding: 24px 20px;
@@ -233,12 +437,11 @@
             padding: 14px 16px;
             border: 1px solid #d1d5db;
             border-radius: 10px;
-            font-size: 16px; /* Prevents zoom on iOS */
+            font-size: 16px;
             transition: all 0.2s ease;
             background: white;
             -webkit-appearance: none;
             appearance: none;
-            /* Prevent viewport changes */
             -webkit-user-select: text;
             user-select: text;
         }
@@ -253,7 +456,6 @@
             color: #9ca3af;
         }
 
-        /* Phone Input Container - Integrated Design */
         .phone-input-container {
             position: relative;
             display: flex;
@@ -309,13 +511,6 @@
             color: #9ca3af;
         }
 
-        /* Flag Emoji Styles */
-        .flag-emoji {
-            font-size: 14px;
-            margin-right: 6px;
-        }
-
-        /* Toggle Styles */
         .toggle-group {
             display: flex;
             align-items: center;
@@ -383,7 +578,6 @@
             transform: translateX(22px);
         }
 
-        /* Submit Button */
         .submit-btn {
             width: 100%;
             padding: 16px;
@@ -411,7 +605,6 @@
             transform: none;
         }
 
-        /* Success Message */
         .success-message {
             display: none;
             background: linear-gradient(135deg, #10b981, #059669);
@@ -430,7 +623,6 @@
             font-size: 1rem;
         }
 
-        /* Loading State */
         .loading .submit-btn {
             background: #9ca3af;
             cursor: not-allowed;
@@ -455,37 +647,33 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Mobile-specific fixes */
         @media (max-width: 767px) {
             html, body {
                 position: fixed;
                 overflow: hidden;
                 height: 100vh;
-                height: 100svh; /* Small viewport - ignores keyboard */
+                height: 100svh;
                 width: 100%;
             }
             
             .main-container {
                 height: 100vh;
-                height: 100svh; /* Small viewport - ignores keyboard */
+                height: 100svh;
                 overflow: hidden;
             }
 
-            /* Prevent iOS zoom on input focus */
             input, textarea, select {
                 font-size: 16px !important;
                 transform: translateZ(0);
             }
 
-            /* Stabilize header during keyboard events */
             .header {
                 position: relative;
                 z-index: 1000;
             }
 
-            /* Prevent layout shift on focus */
             .form-group input:focus, .phone-input-container:focus-within {
-                transform: translateZ(0); /* Force GPU acceleration */
+                transform: translateZ(0);
             }
 
             .phone-input-container {
@@ -495,9 +683,39 @@
             .country-code-dropdown {
                 min-width: 70px;
             }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+
+            .benefit-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 12px;
+                text-align: left;
+            }
+
+            .benefit-label {
+                margin-bottom: 0;
+                font-size: 0.8rem;
+            }
+
+            .benefit-value {
+                font-size: 0.85rem;
+            }
+
+            .option-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .return-amount {
+                align-self: flex-end;
+            }
         }
 
-        /* Desktop Styles */
         @media (min-width: 768px) {
             .main-container {
                 max-width: 600px;
@@ -518,11 +736,6 @@
 
             .header h1 {
                 font-size: 2.2rem;
-            }
-
-            .header p {
-                font-size: 1.1rem;
-                max-width: 400px;
             }
 
             .content-container {
@@ -555,9 +768,24 @@
                 transform: translateY(-2px);
                 box-shadow: 0 8px 24px rgba(255, 0, 128, 0.3);
             }
+
+            .plan-options {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+
+            .option-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            }
+
+            .plan-item.expandable:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            }
         }
 
-        /* Additional mobile scroll fixes */
         @supports (-webkit-appearance: none) {
             .main-container {
                 min-height: -webkit-fill-available;
@@ -568,10 +796,9 @@
 <body>
     <div class="main-container">
         <header class="header">
-            <div class="header-icon">
+ <div class="header-icon">
                 <img src="wealth.png" alt="Wealth Icon" style="width: 100%; height: 100%;">
-            </div>
-            <div>
+            </div>            <div>
                 <h1>Wealth Plans</h1>
             </div>
         </header>
@@ -582,22 +809,229 @@
                     <h2 class="section-title">Available Wealth Plans</h2>
                     
                     <div class="plans-list">
-                    <div class="plan-item">
-                        <h3>SBI Life - Smart Elite Plus</h3>
-                        <p>Comprehensive investment plan offering high returns with long-term financial growth and flexible premium options.</p>
-                    </div>
+                        <div class="plan-item">
+                            <h3>SBI Life - Smart Elite Plus</h3>
+                            <p>Comprehensive investment plan offering high returns with long-term financial growth and flexible premium options.</p>
+                            <div class="plan-highlight">
+                                <span class="highlight-badge">Premium Plan</span>
+                                <p class="highlight-text">Contact our advisor for personalized investment options</p>
+                            </div>
+                        </div>
 
-                    <div class="plan-item">
-                        <h3>SBI Life - Smart Privilege Plus</h3>
-                        <p>Wealth creation plan with tailored benefits, ensuring financial security and premium flexibility for your future goals.</p>
-                    </div>
+                        <div class="plan-item expandable" data-plan="privilege">
+                            <div class="plan-header">
+                                <div>
+                                    <h3>SBI Life - Smart Privilege Plus</h3>
+                                    <p>5-year premium payment plan with guaranteed returns in 15 years</p>
+                                    <div class="plan-highlight">
+                                        <span class="highlight-badge premium">5 Pay Premium</span>
+                                        <p class="highlight-text">Up to ₹4.35 Cr returns • Premium life coverage</p>
+                                    </div>
+                                </div>
+                                <div class="expand-icon">▼</div>
+                            </div>
+                            
+                            <div class="plan-details">
+                                <div class="plan-options">
+                                    <div class="option-card">
+                                        <div class="option-header">
+                                            <span class="premium-amount">₹6.2 Lakhs × 5 years</span>
+                                            <span class="return-amount">₹1.04 Cr</span>
+                                        </div>
+                                        <div class="benefits-grid">
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Life Cover</span>
+                                                <span class="benefit-value">₹42 Lakhs</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Accident Benefit</span>
+                                                <span class="benefit-value">₹1.26 Cr</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Disability Benefit</span>
+                                                <span class="benefit-value">₹42 Lakhs</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                    <div class="plan-item">
-                        <h3>Sp Life - Smart Fortune Builder</h3>
-                        <p>Strategic wealth-building plan with diversified investment options and guaranteed benefits for your family’s financial future.</p>
+                                    <div class="option-card">
+                                        <div class="option-header">
+                                            <span class="premium-amount">₹10.3 Lakhs × 5 years</span>
+                                            <span class="return-amount">₹1.74 Cr</span>
+                                        </div>
+                                        <div class="benefits-grid">
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Life Cover</span>
+                                                <span class="benefit-value">₹70 Lakhs</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Accident Benefit</span>
+                                                <span class="benefit-value">₹2 Cr</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Disability Benefit</span>
+                                                <span class="benefit-value">₹70 Lakhs</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="option-card popular">
+                                        <div class="popular-badge">Most Popular</div>
+                                        <div class="option-header">
+                                            <span class="premium-amount">₹20.4 Lakhs × 5 years</span>
+                                            <span class="return-amount">₹3.48 Cr</span>
+                                        </div>
+                                        <div class="benefits-grid">
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Life Cover</span>
+                                                <span class="benefit-value">₹1.4 Cr</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Accident Benefit</span>
+                                                <span class="benefit-value">₹2 Cr</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Disability Benefit</span>
+                                                <span class="benefit-value">₹1.4 Cr</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="option-card premium-tier">
+                                        <div class="premium-tier-badge">Premium Tier</div>
+                                        <div class="option-header">
+                                            <span class="premium-amount">₹25.4 Lakhs × 5 years</span>
+                                            <span class="return-amount">₹4.35 Cr</span>
+                                        </div>
+                                        <div class="benefits-grid">
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Life Cover</span>
+                                                <span class="benefit-value">₹1.75 Cr</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Accident Benefit</span>
+                                                <span class="benefit-value">₹2 Cr</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Disability Benefit</span>
+                                                <span class="benefit-value">₹1.5 Cr</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="plan-note">
+                                    <p><strong>Maturity Period:</strong> 15 years from policy start date</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="plan-item expandable" data-plan="fortune">
+                            <div class="plan-header">
+                                <div>
+                                    <h3>SBI Life - Smart Fortune Builder</h3>
+                                    <p>7-year premium payment plan with guaranteed wealth building</p>
+                                    <div class="plan-highlight">
+                                        <span class="highlight-badge builder">7 Pay Builder</span>
+                                        <p class="highlight-text">Up to ₹55.92 Lakhs returns • Comprehensive coverage</p>
+                                    </div>
+                                </div>
+                                <div class="expand-icon">▼</div>
+                            </div>
+                            
+                            <div class="plan-details">
+                                <div class="plan-options">
+                                    <div class="option-card">
+                                        <div class="option-header">
+                                            <span class="premium-amount">₹1.03 Lakhs × 7 years</span>
+                                            <span class="return-amount">₹22.37 Lakhs</span>
+                                        </div>
+                                        <div class="benefits-grid">
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Life Cover</span>
+                                                <span class="benefit-value">₹10 Lakhs</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Accident Benefit</span>
+                                                <span class="benefit-value">₹30 Lakhs</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Disability Benefit</span>
+                                                <span class="benefit-value">₹10 Lakhs</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="option-card">
+                                        <div class="option-header">
+                                            <span class="premium-amount">₹1.56 Lakhs × 7 years</span>
+                                            <span class="return-amount">₹33.55 Lakhs</span>
+                                        </div>
+                                        <div class="benefits-grid">
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Life Cover</span>
+                                                <span class="benefit-value">₹15 Lakhs</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Accident Benefit</span>
+                                                <span class="benefit-value">₹45 Lakhs</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Disability Benefit</span>
+                                                <span class="benefit-value">₹15 Lakhs</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="option-card recommended">
+                                        <div class="recommended-badge">Recommended</div>
+                                        <div class="option-header">
+                                            <span class="premium-amount">₹2.07 Lakhs × 7 years</span>
+                                            <span class="return-amount">₹44.74 Lakhs</span>
+                                        </div>
+                                        <div class="benefits-grid">
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Life Cover</span>
+                                                <span class="benefit-value">₹20 Lakhs</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Accident Benefit</span>
+                                                <span class="benefit-value">₹60 Lakhs</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Disability Benefit</span>
+                                                <span class="benefit-value">₹20 Lakhs</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="option-card">
+                                        <div class="option-header">
+                                            <span class="premium-amount">₹2.59 Lakhs × 7 years</span>
+                                            <span class="return-amount">₹55.92 Lakhs</span>
+                                        </div>
+                                        <div class="benefits-grid">
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Life Cover</span>
+                                                <span class="benefit-value">₹25 Lakhs</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Accident Benefit</span>
+                                                <span class="benefit-value">₹75 Lakhs</span>
+                                            </div>
+                                            <div class="benefit-item">
+                                                <span class="benefit-label">Disability Benefit</span>
+                                                <span class="benefit-value">₹25 Lakhs</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="plan-note">
+                                    <p><strong>Maturity Period:</strong> 15 years from policy start date</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
                 <div class="form-section">
                     <h2 class="form-title">Get Expert Consultation</h2>
@@ -653,7 +1087,7 @@
                                 <option value="">Select a Wealth plan</option>
                                 <option value="Smart Elite Plus - Wealth Plan">SBI Life - Smart Elite Plus</option>
                                 <option value="Smart Privilege Plus - Wealth Plan">SBI Life - Smart Privilege Plus</option>
-                                <option value="Smart Fortune Builder - Wealth Plan">Sp Life - Smart Fortune Builder</option>
+                                <option value="Smart Fortune Builder - Wealth Plan">SBI Life - Smart Fortune Builder</option>
                                 <option value="General Inquiry On Wealth Plan">General Inquiry - Need guidance on all plans</option>
                             </select>
                         </div>
@@ -680,24 +1114,19 @@
 
     <script>
         $(document).ready(function() {
-            // Completely prevent any scrolling beyond content
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
             
-            // Prevent touch scrolling and elastic bounce
             document.addEventListener('touchmove', function(e) {
-                // Only allow scrolling within the content wrapper
                 if (!e.target.closest('.content-wrapper')) {
                     e.preventDefault();
                 }
             }, { passive: false });
 
-            // Prevent scroll events on window
             window.addEventListener('scroll', function(e) {
                 window.scrollTo(0, 0);
             }, { passive: false });
 
-            // Add loading animations on page load
             $('.plan-item').each(function(index) {
                 $(this).css({
                     'opacity': '0',
@@ -709,21 +1138,48 @@
                 });
             });
 
-            // Form submission with enhanced mobile UX
+            $('.plan-item.expandable').on('click', function(e) {
+                e.preventDefault();
+                const $this = $(this);
+                const $details = $this.find('.plan-details');
+                
+                if ($this.hasClass('expanded')) {
+                    $details.slideUp(300, function() {
+                        $this.removeClass('expanded');
+                    });
+                } else {
+                    $this.addClass('expanded');
+                    $details.slideDown(300);
+                    
+                    setTimeout(() => {
+                        const container = $('.content-wrapper')[0];
+                        const elementTop = this.offsetTop;
+                        const containerHeight = container.clientHeight;
+                        const scrollTop = elementTop - (containerHeight / 4);
+                        
+                        container.scrollTo({
+                            top: scrollTop,
+                            behavior: 'smooth'
+                        });
+                    }, 350);
+                }
+                
+                if (navigator.vibrate) {
+                    navigator.vibrate(30);
+                }
+            });
+
             $('#contactForm').submit(function(e) {
                 e.preventDefault();
                 const form = this;
 
-                // Get the selected country code and phone number
                 const countryCode = $('#countryCode').val();
                 const phoneNumber = $('#contact').val();
                 const fullPhoneNumber = countryCode + ' ' + phoneNumber;
 
-                // Add loading state
                 $(form).addClass('loading');
                 $('.submit-btn').text('');
 
-                // Prepare form data for EmailJS
                 const formData = {
                     name: $('#name').val(),
                     contact: fullPhoneNumber,
@@ -732,19 +1188,15 @@
                     nri: $('#nri').is(':checked') ? 'Yes' : 'No'
                 };
 
-                // Send form using EmailJS
                 emailjs.send('service_s36q7fe', 'template_kdgl38n', formData)
                 .then(function(response) {
                     console.log('SUCCESS!', response.status, response.text);
 
-                    // Remove loading state and reset button text
                     $(form).removeClass('loading');
                     $('.submit-btn').text('Request Consultation');
 
-                    // Show success message
                     $('#successMessage').slideDown(300);
 
-                    // Reset form and hide message after 4 seconds
                     setTimeout(() => {
                         form.reset();
                         $('#successMessage').slideUp(300);
@@ -753,26 +1205,20 @@
                     console.log('FAILED...', error);
                     alert('Oops! Something went wrong; please try again.');
 
-                    // Remove loading state and reset button text
                     $(form).removeClass('loading');
                     $('.submit-btn').text('Request Consultation');
                 });
             });
 
-            // Enhanced phone number formatting based on country code
               $('#contact').on('input', function (e) {
                 let input = this;
                 let cursorPos = input.selectionStart;
                 let rawValue = input.value;
                 const selectedCountryCode = $('#countryCode').val();
 
-                // Store the old value before formatting
                 let oldValue = rawValue;
-
-                // Remove all non-digit characters to count actual digits
                 let numbersOnly = rawValue.replace(/\D/g, '');
 
-                // Count digits before cursor position in the original value
                 let digitsBeforeCursor = 0;
                 for (let i = 0; i < cursorPos && i < oldValue.length; i++) {
                     if (/\d/.test(oldValue[i])) {
@@ -780,12 +1226,11 @@
                     }
                 }
 
-                // Apply different formatting based on country code
                 let formattedValue = '';
-                let maxLength = 15; // Default max length
+                let maxLength = 15;
 
                 switch(selectedCountryCode) {
-                    case '+91': // India
+                    case '+91':
                         maxLength = 10;
                         if (numbersOnly.length > maxLength) {
                             numbersOnly = numbersOnly.substring(0, maxLength);
@@ -797,7 +1242,7 @@
                         }
                         break;
                     
-                    case '+1': // US/Canada
+                    case '+1':
                         maxLength = 10;
                         if (numbersOnly.length > maxLength) {
                             numbersOnly = numbersOnly.substring(0, maxLength);
@@ -811,7 +1256,7 @@
                         }
                         break;
                     
-                    case '+44': // UK
+                    case '+44':
                         maxLength = 11;
                         if (numbersOnly.length > maxLength) {
                             numbersOnly = numbersOnly.substring(0, maxLength);
@@ -825,7 +1270,7 @@
                         }
                         break;
                     
-                    default: // Other countries - basic formatting
+                    default:
                         maxLength = 12;
                         if (numbersOnly.length > maxLength) {
                             numbersOnly = numbersOnly.substring(0, maxLength);
@@ -840,15 +1285,12 @@
                         break;
                 }
 
-                // Only update if formatted string differs
                 if (formattedValue !== rawValue) {
                     input.value = formattedValue;
 
-                    // Calculate new cursor position based on digit count
                     let newCursorPos = 0;
                     let digitCount = 0;
                     
-                    // Find cursor position by counting digits up to the desired count
                     for (let i = 0; i < formattedValue.length && digitCount < digitsBeforeCursor; i++) {
                         if (/\d/.test(formattedValue[i])) {
                             digitCount++;
@@ -856,29 +1298,23 @@
                         newCursorPos = i + 1;
                     }
 
-                    // Set cursor position immediately without setTimeout for better responsiveness
                     input.setSelectionRange(newCursorPos, newCursorPos);
                 }
             });
 
-            // Clear and reformat phone number when country code changes
             $('#countryCode').on('change', function() {
                 $('#contact').val('').trigger('input');
             });
             
-            // Enhanced mobile form interactions with keyboard handling
             $('.form-group input, .country-code-select').on('focus', function() {
                 $(this).parent().addClass('focused');
                 
-                // Prevent layout shifts on mobile
                 if (window.innerWidth <= 767) {
-                    // Lock viewport to prevent shifts
                     const viewport = document.querySelector("meta[name=viewport]");
                     if (viewport) {
                         viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
                     }
                     
-                    // Smooth scroll to input without disrupting layout
                     setTimeout(() => {
                         const rect = this.getBoundingClientRect();
                         const container = document.querySelector('.content-wrapper');
@@ -893,7 +1329,6 @@
             }).on('blur', function() {
                 $(this).parent().removeClass('focused');
                 
-                // Restore normal viewport behavior
                 if (window.innerWidth <= 767) {
                     const viewport = document.querySelector("meta[name=viewport]");
                     if (viewport) {
@@ -902,7 +1337,6 @@
                 }
             });
 
-            // Form validation with visual feedback
             $('input[required], select[required]').on('blur', function() {
                 const value = $(this).val().trim();
                 if (value === '') {
@@ -923,7 +1357,6 @@
                 }
             });
 
-            // Reset border color on focus
             $('input, .country-code-select, select').on('focus', function() {
                 $(this).css({
                     'border-color': '#ff0080',
@@ -931,13 +1364,11 @@
                 });
             });
 
-            // Email validation helper
             function isValidEmail(email) {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return emailRegex.test(email);
             }
 
-            // Haptic feedback simulation
             function vibrate() {
                 if (navigator.vibrate) {
                     navigator.vibrate(50);
